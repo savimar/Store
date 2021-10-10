@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> Добавить pfrfp </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+
+<body>
+<div class="container my-5">
+    <h3> Добавить заказ</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-10">
+                <!--/*@thymesVar id="order" type="ru.savimar.storedemo.entity.Order"*/-->
+                <form action="#" th:action="@{/createOrder}" th:object="${order}"
+                      method="post">
+                    <div class="row">
+                             <div class="form-group col-md-8">
+                                <label for="product" class="col-form-label">Продукт</label>
+                                <input type="text" th:field="${order.product}" class="form-control"
+                                       id="product" placeholder="product" />
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <label for="price" class="col-form-label">Общая сумма</label>
+                                <input type="text" th:field="${order.price}" class="form-control"
+                                       id="price" placeholder="price" />
+                            </div>
+
+
+
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-primary" value="Сохранить" />
+                        </div>
+
+                        <input type="hidden" id="id" th:field="*{id}" />
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+ 
+ minikube start 
+
+ minikube start --driver=hyperv  --cpus=8 --memory=12g --cni=flannel --kubernetes-version="v1.19.0"
+ 
+ minikube addons enable ingress 
+
+ helm repo add bitnami https://charts.bitnami.com/bitnami
+
+ helm repo update
+ 
+ kubectl create ns app
+
+ kubectl config set-context --current --namespace=app
+
+
+ cd C:\Users\Maria\IdeaProjects\StoreDemo\src\main\resources\db_yaml
+ 
+ kubectl apply -f user-config.yaml  
+ 
+ helm install storedb bitnami/postgresql -f values.yaml
+
+ kubectl apply -f initdb.yaml
+
+  kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission 
+
+  kubectl apply -f C:\Users\Maria\IdeaProjects\StoreDemo\src\main\resources\yaml
+ 
+ kubectl get all  (ждем когда поднимутся поды)
+ 
+ #db
+
+ (проверка данных в БД)
+  cd "F:\Program Files\PostgreSQL\13\bin"
+ .\psql -h  172.31.170.123 -p 31508 -U postgres -W users (port NodePort service/pg, host - minikube ip)
+ Пароль: root
+ select * from users;
+ select * from customer;
+
+ \q
+
+ kubectl logs pod/savimar-deployment-6889bb7d56-5jkxf
+ 
+ curl  http://arch.homework/customers
+  
+  kubectl get all --all-namespaces   
+  
+  kubectl get ingress --all-namespaces   
+
+   kubectl describe pod/pg-0
+ 
+
+   kubectl delete deployment.apps/savimar-deployment
+
+
+  

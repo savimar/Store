@@ -1,0 +1,21 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: otus-service
+  labels:
+    app: savimar-demo
+spec:
+  selector:
+    app: savimar-demo
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 9091
+      name : web
+    - port: 9095
+      targetPort : 9091
+      protocol: TCP
+      name : metrics
+  type: NodePort
+  
+  

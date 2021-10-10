@@ -1,0 +1,95 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "initdb"
+  namespace: app
+spec:
+  template:
+    metadata:
+      name: "initdb"
+    spec:
+      restartPolicy: OnFailure
+#      initContainers:
+#        - name: check-db-ready
+#          image: postgres:13.1-alpine
+#          env:
+#            - name: POSTGRES_HOST
+#              value: "postgres"
+#            - name: POSTGRES_PORT
+#              value: "5432"
+#          command:
+#            - sh
+#            - "-c"
+#            - |
+#              until pg_isready -h $POSTGRES_HOST  -p  $POSTGRES_PORT;
+#              do echo waiting for database; sleep 2; done;
+      containers:
+      - name: initdb
+        image: postgres:13.1-alpine
+        env:
+          - name: DATABASE_URI            
+            valueFrom:
+             secretKeyRef:
+              name: db-secret
+              key: DATABASE_URL 
+        command:
+          - sh
+          - "-c"
+          - |
+            psql $DATABASE_URI <<'EOF'
+             DROP table IF EXISTS users;
+  DROP table IF EXISTS orders;
+  DROP table IF EXISTS products;
+
+
+
+  create table users (  id serial primary key,
+  first_name varchar(200),
+  last_name varchar(200),
+  email varchar(50)
+  );
+
+  create table orders
+  (
+  id  serial primary key,
+  user_id  integer,
+  price  integer,
+  complete boolean,
+  date timestamp,
+  constraint fk_orders_user
+  foreign key (user_id)
+  REFERENCES users (id)
+
+  );
+  create table products( id serial primary key,
+  name_ varchar(200),
+  category varchar(200),
+  order_id integer,
+  amount integer,
+  constraint fk_order_products
+  foreign key (order_id)
+  REFERENCES orders(id)
+
+  );
+
+  insert into users (id, first_name,last_name )
+  values
+  (1,'Иван', 'Иванов'),
+  (2,'Нина', 'Петрова');
+
+  insert into orders (id, user_id, price, complete, date )
+  values
+  (3, 1, 200, false, CURRENT_DATE),
+  (4,1, 5000, true, CURRENT_DATE),
+  (5,2,  10000, false, CURRENT_DATE);
+
+  insert into products (id, name_, category, order_id, amount)
+  values
+  (6, 'Стол', 'мебель', 5, 1),
+  (7, 'Стул', 'мебель', 5, 4),
+  (8, 'Хлеб', 'еда', 3, 2),
+  (9, 'Шампунь', 'красота', 5, 20)
+
+
+  EOF
+  backoffLimit: 3
