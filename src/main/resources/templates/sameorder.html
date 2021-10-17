@@ -1,0 +1,21 @@
+<body>
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <!--/*@thymesVar id="orderList" type="java.util.ArrayList<ru.savimar.storedemo.entity.Order>"*/-->
+      <div th:switch="${orderList}" class="container my-5">
+        <p class="my-5">
+          <a href="/editOrder" class="btn btn-primary">
+            <i class="fas fa-user-plus ml-2"> Сделать новый заказ </i></a>
+        </p>
+        <div class="col-md-10">
+          <h2>Вы уже создали подобный заказ, вы точно хотите повторить уже сделанный заказ?</h2>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

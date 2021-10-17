@@ -10,6 +10,7 @@ package ru.savimar.storedemo.entity;
 //import savimar.billing.entity.Bill;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name="users")
@@ -73,6 +74,19 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return firstName.equals(user.firstName) && lastName.equals(user.lastName) && Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email);
     }
 
     /*public Bill getBill() {

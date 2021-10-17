@@ -40,8 +40,8 @@ public class OrderController {
         model.addAttribute("orderList", orderList);
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpEntity<User> request = new HttpEntity<>(user);
-        Integer account = restTemplate.postForObject("/getBillForUser", request, Integer.class);
+       // HttpEntity<User> request = new HttpEntity<>(user);
+     //   Integer account = restTemplate.postForObject("/getBillForUser", request, Integer.class);
         return "orders";
     }
     @RequestMapping(path = "/createOrderForUser/{id}")
@@ -91,20 +91,23 @@ public class OrderController {
 
     //for postman
     @RequestMapping(path = {"/saveOrder", "/saveOrder/{id}"})
-    public String saveEmployeeById(Model model, @RequestBody Order order, @PathVariable("id") Optional<Integer> id) {
-
+    public String saveOrderById(Model model, @RequestBody Order order, @PathVariable("id") Optional<Integer> id) {
+        Order saveOrder;
         if (id.isPresent()) {
             Order newOrder = service.getOrderById(id.get());
             newOrder.setPrice(order.getPrice());
             newOrder.setProduct(order.getProduct());
-           service.save(newOrder);
-        } else {
-
-            service.save(order);
+            saveOrder = service.save(newOrder);
+            } else {
+            saveOrder = service.save(order);
         }
-        List<Order> orderList = service.getOrderListByUser(userService.getUserById(1));
-        model.addAttribute("orderList", orderList);
-        return "orders";
+        if(saveOrder != null) {
+            List<Order> orderList = service.getOrderListByUser(userService.getUserById(1));
+            model.addAttribute("orderList", orderList);
+            return "orders";
+        }else {
+            return "sameorder";
+        }
     }
 
     @RequestMapping(path = "/deleteOrder/{id}")
@@ -114,14 +117,19 @@ public class OrderController {
     }
 
     @RequestMapping(path = "/createOrder/{userId}", method = RequestMethod.POST)
-    public String createOrUpdateOrder(Model model, Order order,  @PathVariable("userId") Integer userId) {
+    public String createOrUpdateOrder(Model model, Order order,  @PathVariable("userId") Optional<Integer> userId) {
+        Order saveOrder;
         order.setCompleted(false);
-        order.setUser(userService.getUserById(userId));
+        order.setUser(userService.getUserById(order.getUser().getId()));
         order.setDate(LocalDate.now());
-        service.save(order);
-        List<Order> orderList = service.getOrderListByUser(userService.getUserById(userId));
-        model.addAttribute("orderList", orderList);
-        return "orders";
+        saveOrder = service.save(order);
+        if(saveOrder != null) {
+            List<Order> orderList = service.getOrderListByUser(userService.getUserById(1));
+            model.addAttribute("orderList", orderList);
+            return "orders";
+        }else {
+            return "sameorder";
+        }
     }
 
 

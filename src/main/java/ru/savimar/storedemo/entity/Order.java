@@ -3,6 +3,7 @@ package ru.savimar.storedemo.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -22,6 +23,26 @@ public class Order {
     private LocalDate date;
     @Column(name="product")
     private String product;
+    @Column(name="operation_id")
+    private int operationId;
+
+    public Order() {
+
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return price == order.price && Objects.equals(user, order.user) && Objects.equals(date, order.date) && Objects.equals(product, order.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, price, date, product);
+    }
 
     public String getProduct() {
         return product;
@@ -69,5 +90,13 @@ public class Order {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public int getOperationId() {
+        return operationId;
+    }
+
+    public void setOperationId(int operationId) {
+        this.operationId = operationId;
     }
 }
