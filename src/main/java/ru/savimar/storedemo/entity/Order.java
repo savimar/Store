@@ -25,10 +25,21 @@ public class Order {
     private String product;
     @Column(name="operation_id")
     private int operationId;
+    @Column(name="order_status")
+    private OrderStatus orderStatus;
 
     public Order() {
 
     }
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+
 
 
     @Override

@@ -18,6 +18,7 @@ create table orders
                       complete boolean,
                       date timestamp,
                       product varchar(200),
+                      order_status varchar(200),
                       operation_id integer,
                       constraint fk_orders_user
                           foreign key (user_id)

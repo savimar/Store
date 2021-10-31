@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ru.savimar.storedemo.entity.Letter;
 import ru.savimar.storedemo.entity.Order;
+import ru.savimar.storedemo.entity.OrderStatus;
 import ru.savimar.storedemo.entity.User;
 import ru.savimar.storedemo.service.OrderService;
 import ru.savimar.storedemo.service.ProducerService;
@@ -97,6 +98,7 @@ public class OrderController {
             Order newOrder = service.getOrderById(id.get());
             newOrder.setPrice(order.getPrice());
             newOrder.setProduct(order.getProduct());
+            newOrder.setOrderStatus(OrderStatus.PENDING);
             saveOrder = service.save(newOrder);
             } else {
             saveOrder = service.save(order);
@@ -120,7 +122,7 @@ public class OrderController {
     public String createOrUpdateOrder(Model model, Order order,  @PathVariable("userId") Optional<Integer> userId) {
         Order saveOrder;
         order.setCompleted(false);
-        order.setUser(userService.getUserById(order.getUser().getId()));
+        order.setUser(userService.getUserById(userId.get()));
         order.setDate(LocalDate.now());
         saveOrder = service.save(order);
         if(saveOrder != null) {

@@ -30,7 +30,9 @@
               <thead>
               <tr>
                 <th>Дата</th>
+                <th>Продукт</th>
                 <th>Цена</th>
+                <th>Статус</th>
                 <th>Редактировать</th>
                 <th>Удалить</th>
               </tr>
@@ -38,7 +40,9 @@
               <tbody>
               <tr th:each="order : ${orderList}">
                 <td th:text="${order.date}"></td>
+                <td th:text="${order.product}"></td>
                 <td th:text="${order.price}"></td>
+                <td th:text="${order.getOrderStatus()}"></td>
                 <td>
                   <a th:href="@{/editOrder/{id}(id=${order.id})}"
                      class="btn btn-primary">
